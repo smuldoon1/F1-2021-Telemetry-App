@@ -2,6 +2,7 @@ import socket
 from struct import *
 
 from packet import *
+from motionPacket import *
 from eventPacket import *
 
 UDP_IP = "0.0.0.0"
@@ -14,15 +15,14 @@ p = 0   # Unpacking index, keeps track of where in the data the next byte should
 
 def UnpackData(data):
     global p
-    packet_header = PacketHeader(unpack("<HBBBBQfIBB", data[p:p+24]))
+    packetHeader = PacketHeader(unpack("<HBBBBQfIBB", data[p:p+24]))
     p = p + 24
-    if packet_header.packetID == 3:
-        packet_event_data = PacketEventData(packet_header, data, p)
-        print(packet_event_data)
+    if packetHeader.packetID == 0:
+        packetMotionData = PacketMotionData(packetHeader, data, p)
+    elif packetHeader.packetID == 3:
+        packetEventData = PacketEventData(packetHeader, data, p)
 
-i = 0
-while i > -10:
+while True:
     p = 0
     data, address = sock.recvfrom(1464)
     UnpackData(data)
-    i = i + 1

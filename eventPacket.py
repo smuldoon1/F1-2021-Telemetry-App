@@ -46,8 +46,8 @@ class EventDataDetails:
             return "Buttons: " + str(self.buttonStatus)
 
 class PacketEventData:
-    def __init__(self, packet_header, data, p):
-        self.packetHeader = packet_header
+    def __init__(self, packetHeader, data, p):
+        self.packetHeader = packetHeader
         code = unpack("<BBBB", data[p:p+4])
         p = p + 4
         
