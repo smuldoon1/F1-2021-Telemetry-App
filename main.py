@@ -6,6 +6,7 @@ from motionPacket import *
 from sessionPacket import *
 from lapPacket import *
 from eventPacket import *
+from participantsPacket import *
 
 UDP_IP = "0.0.0.0"
 UDP_PORT = 20777
@@ -27,6 +28,8 @@ def UnpackData(data):
         packetLapData = PacketLapData(packetHeader, data, p)
     elif packetHeader.packetID == 3:
         packetEventData = PacketEventData(packetHeader, data, p)
+    elif packetHeader.packetID == 4:
+        packetParticipantsData = PacketParticipantsData(packetHeader, data, p)
 
 while True:
     p = 0
