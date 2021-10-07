@@ -3,6 +3,7 @@ from struct import *
 
 from packet import *
 from motionPacket import *
+from sessionPacket import *
 from eventPacket import *
 
 UDP_IP = "0.0.0.0"
@@ -19,6 +20,8 @@ def UnpackData(data):
     p = p + 24
     if packetHeader.packetID == 0:
         packetMotionData = PacketMotionData(packetHeader, data, p)
+    elif packetHeader.packetID == 1:
+        packetSessionData = PacketSessionData(packetHeader, data, p)
     elif packetHeader.packetID == 3:
         packetEventData = PacketEventData(packetHeader, data, p)
 
