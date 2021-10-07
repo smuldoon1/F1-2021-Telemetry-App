@@ -7,6 +7,7 @@ from sessionPacket import *
 from lapPacket import *
 from eventPacket import *
 from participantsPacket import *
+from carSetupsPacket import *
 
 UDP_IP = "0.0.0.0"
 UDP_PORT = 20777
@@ -30,6 +31,8 @@ def UnpackData(data):
         packetEventData = PacketEventData(packetHeader, data, p)
     elif packetHeader.packetID == 4:
         packetParticipantsData = PacketParticipantsData(packetHeader, data, p)
+    elif packetHeader.packetID == 5:
+        packetCarSetupData = PacketCarSetupData(packetHeader, data, p)
 
 while True:
     p = 0
