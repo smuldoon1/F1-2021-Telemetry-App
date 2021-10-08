@@ -39,7 +39,7 @@ class PacketSessionData:
         self.numMarshallZones = sessionData[15]
         self.marshallZones = [None] * 21
         for i in range(21):
-            self.marshallZones[i] = unpack("<fb", data[p:p+5])
+            self.marshallZones[i] = MarshallZone(unpack("<fb", data[p:p+5]))
             p = p + 5
         sessionData = unpack("<BBB", data[p:p+3])
         p = p + 3
@@ -48,7 +48,7 @@ class PacketSessionData:
         self.numWeatherForecastSamples = sessionData[2]
         self.weatherForecastSamples = [None] * 56
         for i in range(56):
-            self.weatherForecastSamples[i] = unpack("<BBBbbbbB", data[p:p+8])
+            self.weatherForecastSamples[i] = WeatherForecastSample(unpack("<BBBbbbbB", data[p:p+8]))
             p = p + 8
         sessionData = unpack("<BBIIIBBBBBBBBBBBB", data[p:p+26])
         p = p + 26
