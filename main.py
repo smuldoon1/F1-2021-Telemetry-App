@@ -13,6 +13,7 @@ from carStatusPacket import *
 from finalClassificationPacket import *
 from lobbyInfoPacket import *
 from carDamagePacket import *
+from sessionHistoryPacket import *
 
 UDP_IP = "0.0.0.0"
 UDP_PORT = 20777
@@ -48,6 +49,8 @@ def UnpackData(data):
         packetLobbyInfoData = PacketLobbyInfoData(packetHeader, data, p)
     elif packetHeader.packetID == 10:
         packetCarDamageData = PacketCarDamageData(packetHeader, data, p)
+    elif packetHeader.packetID == 11:
+        packetSessionHistoryData = PacketSessionHistoryData(packetHeader, data, p)
 
 while True:
     p = 0
