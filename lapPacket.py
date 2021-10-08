@@ -32,5 +32,5 @@ class PacketLapData:
         self.packetHeader = packetHeader
         self.lapData = [None] * 22
         for i in range(22):
-            self.lapData[i] = unpack("<IIHHfffBBBBBBBBBBBBBBHHB", data[p:p+43])
+            self.lapData[i] = LapData(unpack("<IIHHfffBBBBBBBBBBBBBBHHB", data[p:p+43]))
             p = p + 43

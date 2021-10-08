@@ -32,5 +32,5 @@ class PacketSessionHistoryData:
             p = p + 11
         self.tyreStintsHistoryData = [None] * 8
         for i in range(8):
-            self.tyreStintsHistoryData[i] = TyreStintHistoryData(unpack("<BBB"), data[p:p+3])
+            self.tyreStintsHistoryData[i] = TyreStintHistoryData(unpack("<BBB", data[p:p+3]))
             p = p + 3
