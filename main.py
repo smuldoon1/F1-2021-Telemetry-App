@@ -11,6 +11,7 @@ from carSetupsPacket import *
 from carTelemetryPacket import *
 from carStatusPacket import *
 from finalClassificationPacket import *
+from lobbyInfoPacket import *
 
 UDP_IP = "0.0.0.0"
 UDP_PORT = 20777
@@ -42,6 +43,8 @@ def UnpackData(data):
         packetCarStatusData = PacketCarStatusData(packetHeader, data, p)
     elif packetHeader.packetID == 8:
         packetFinalClassificationData = PacketFinalClassificationData(packetHeader, data, p)
+    elif packetHeader.packetID == 9:
+        packetLobbyInfoData = PacketLobbyInfoData(packetHeader, data, p)
 
 while True:
     p = 0
