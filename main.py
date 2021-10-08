@@ -12,6 +12,7 @@ from carTelemetryPacket import *
 from carStatusPacket import *
 from finalClassificationPacket import *
 from lobbyInfoPacket import *
+from carDamagePacket import *
 
 UDP_IP = "0.0.0.0"
 UDP_PORT = 20777
@@ -45,6 +46,8 @@ def UnpackData(data):
         packetFinalClassificationData = PacketFinalClassificationData(packetHeader, data, p)
     elif packetHeader.packetID == 9:
         packetLobbyInfoData = PacketLobbyInfoData(packetHeader, data, p)
+    elif packetHeader.packetID == 10:
+        packetCarDamageData = PacketCarDamageData(packetHeader, data, p)
 
 while True:
     p = 0
