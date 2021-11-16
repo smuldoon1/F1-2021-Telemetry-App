@@ -20,8 +20,9 @@ class CarTelemetryData:
         self.surfaceType = data[27:31]
 
 class PacketCarTelemetryData:
-    def __init__(self, packetHeader, data, p):
+    def __init__(self, packetHeader, data):
         self.packetHeader = packetHeader
+        p = 24
         self.carTelemetryData = [None] * 22
         for i in range(22):
             self.carTelemetryData[i] = CarTelemetryData(unpack("<HfffBbHBBHHHHHBBBBBBBBHffffBBBB", data[p:p+60]))

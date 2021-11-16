@@ -26,8 +26,9 @@ class CarSetupData:
         self.fuelLoad = data[21]
 
 class PacketCarSetupData:
-    def __init__(self, packetHeader, data, p):
+    def __init__(self, packetHeader, data):
         self.packetHeader = packetHeader
+        p = 24
         self.carSetups = [None] * 22
         for i in range(22):
             self.carSetups[i] = CarSetupData(unpack("<BBBBffffBBBBBBBBffffBf", data[p:p+49]))

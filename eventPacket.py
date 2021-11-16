@@ -46,10 +46,10 @@ class EventDataDetails:
             return "Buttons: " + str(self.buttonStatus)
 
 class PacketEventData:
-    def __init__(self, packetHeader, data, p):
+    def __init__(self, packetHeader, data):
         self.packetHeader = packetHeader
-        code = unpack("<BBBB", data[p:p+4])
-        p = p + 4
+        code = unpack("<BBBB", data[24:28])
+        p = 28
         
         self.eventStringCode = "".join([chr(code[0]), chr(code[1]), chr(code[2]), chr(code[3])])
         if self.eventStringCode == "FTLP":                                                              # Fastest lap

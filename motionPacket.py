@@ -22,8 +22,9 @@ class CarMotionData:
         self.roll = data[17]
 
 class PacketMotionData:
-    def __init__(self, packetHeader, data, p):
+    def __init__(self, packetHeader, data):
         self.packetHeader = packetHeader
+        p = 24
         self.carMotionData = [None] * 22
         for i in range(22):
             self.carMotionData[i] = CarMotionData(unpack("<ffffffhhhhhhffffff", data[p:p+60]))

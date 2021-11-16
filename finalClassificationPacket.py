@@ -17,10 +17,11 @@ class FinalClassificationData:
         self.tyreStintsVisual = data[19:27]
 
 class PacketFinalClassificationData:
-    def __init__(self, packetHeader, data, p):
+    def __init__(self, packetHeader, data):
         self.packetHeader = packetHeader
-        self.numCars = data[p]
+        self.numCars = data[24]
+        p = 25
         self.classificationData = [None] * 22
         for i in range(22):
-            self.classificationData[i] = FinalClassificationData(unpack("<BBBBBBIdBBBBBBBBBBBBBBBBBBB", data[p+1:p+38]))
-            p = p + 37
+            self.classificationData[i] = FinalClassificationData(unpack("<BBBBBBIdBBBBBBBBBBBBBBBBBBB", data[p:p+38]))
+            p = p + 38

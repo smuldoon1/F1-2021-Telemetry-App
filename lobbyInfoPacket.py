@@ -11,10 +11,11 @@ class LobbyInfoData:
         self.readyStatus = data[52]
 
 class PacketLobbyInfoData:
-    def __init__(self, packetHeader, data, p):
+    def __init__(self, packetHeader, data):
         self.packetHeader = packetHeader
-        self.numPlayers = data[p]
+        self.numPlayers = data[24]
+        p = 25
         self.lobbyPlayers = [None] * 22
         for i in range(22):
-            self.lobbyPlayers[i] = LobbyInfoData(unpack("<BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB", data[p+1:p+54]))
-            p = p + 53
+            self.lobbyPlayers[i] = LobbyInfoData(unpack("<BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB", data[p:p+54]))
+            p = p + 54

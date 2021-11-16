@@ -24,35 +24,39 @@ sock.bind((UDP_IP, UDP_PORT))
 p = 0   # Unpacking index, keeps track of where in the data the next byte should be unpacked from
 
 def UnpackData(data):
-    global p
-    packetHeader = PacketHeader(unpack("<HBBBBQfIBB", data[p:p+24]))
-    p = p + 24
+    packetHeader = PacketHeader(unpack("<HBBBBQfIBB", data[0:24]))
     if packetHeader.packetID == 0:
-        packetMotionData = PacketMotionData(packetHeader, data, p)
+        return PacketMotionData(packetHeader, data)
     elif packetHeader.packetID == 1:
-        packetSessionData = PacketSessionData(packetHeader, data, p)
+        return PacketSessionData(packetHeader, data)
     elif packetHeader.packetID == 2:
-        packetLapData = PacketLapData(packetHeader, data, p)
+        return PacketLapData(packetHeader, data)
     elif packetHeader.packetID == 3:
-        packetEventData = PacketEventData(packetHeader, data, p)
+        return PacketEventData(packetHeader, data)
     elif packetHeader.packetID == 4:
-        packetParticipantsData = PacketParticipantsData(packetHeader, data, p)
+        return PacketParticipantsData(packetHeader, data)
     elif packetHeader.packetID == 5:
-        packetCarSetupData = PacketCarSetupData(packetHeader, data, p)
+        return PacketCarSetupData(packetHeader, data)
     elif packetHeader.packetID == 6:
-        packetCarTelemetryData = PacketCarTelemetryData(packetHeader, data, p)
+        return PacketCarTelemetryData(packetHeader, data)
     elif packetHeader.packetID == 7:
-        packetCarStatusData = PacketCarStatusData(packetHeader, data, p)
+        return PacketCarStatusData(packetHeader, data)
     elif packetHeader.packetID == 8:
-        packetFinalClassificationData = PacketFinalClassificationData(packetHeader, data, p)
+        return PacketFinalClassificationData(packetHeader, data)
     elif packetHeader.packetID == 9:
-        packetLobbyInfoData = PacketLobbyInfoData(packetHeader, data, p)
+        return PacketLobbyInfoData(packetHeader, data)
     elif packetHeader.packetID == 10:
-        packetCarDamageData = PacketCarDamageData(packetHeader, data, p)
+        return PacketCarDamageData(packetHeader, data)
     elif packetHeader.packetID == 11:
-        packetSessionHistoryData = PacketSessionHistoryData(packetHeader, data, p)
+        return PacketSessionHistoryData(packetHeader, data)
 
-while True:
-    p = 0
+def RetrievePacket():
     data, address = sock.recvfrom(1464)
-    UnpackData(data)
+    return UnpackData(data)
+'''
+def RetrievePacket(packetType):
+    data, address = sock.recvfrom(1464)
+    packet = UnpackData(data)
+    if packet.packetHeader.packetID == packetType:
+        return packet
+'''

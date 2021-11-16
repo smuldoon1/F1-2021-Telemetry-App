@@ -17,10 +17,9 @@ class WeatherForecastSample:
         self.rainPercentage = data[7]
 
 class PacketSessionData:
-    def __init__(self, packetHeader, data, p):
+    def __init__(self, packetHeader, data):
         self.packetHeader = packetHeader
-        sessionData = unpack("<BbbBHBbBHHBBBBBB", data[p:p+19])
-        p = p + 19
+        sessionData = unpack("<BbbBHBbBHHBBBBBB", data[24:43])
         self.weather = sessionData[0]
         self.trackTemperature = sessionData[1]
         self.airTemperature = sessionData[2]
@@ -37,6 +36,7 @@ class PacketSessionData:
         self.spectatorCarIndex = sessionData[13]
         self.sliProNativeSupport = sessionData[14]
         self.numMarshallZones = sessionData[15]
+        p = 43
         self.marshallZones = [None] * 21
         for i in range(21):
             self.marshallZones[i] = MarshallZone(unpack("<fb", data[p:p+5]))

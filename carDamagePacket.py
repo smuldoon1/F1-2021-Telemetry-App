@@ -22,8 +22,9 @@ class CarDamageData:
         self.engineTCWear = data[26]
 
 class PacketCarDamageData:
-    def __init__(self, packetHeader, data, p):
+    def __init__(self, packetHeader, data):
         self.packetHeader = packetHeader
+        p = 24
         self.carDamageData = [None] * 22
         for i in range(22):
             self.carDamageData[i] = CarDamageData(unpack("<ffffBBBBBBBBBBBBBBBBBBBBBBB", data[p:p+39]))

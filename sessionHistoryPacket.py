@@ -15,10 +15,9 @@ class TyreStintHistoryData:
         self.tyreVisualCompound = data[2]
 
 class PacketSessionHistoryData:
-    def __init__(self, packetHeader, data, p):
+    def __init__(self, packetHeader, data):
         self.packetHeader = packetHeader
-        carHistoryData = unpack("<BBBBBBB", data[p:p+7])
-        p = p + 7
+        carHistoryData = unpack("<BBBBBBB", data[24:31])
         self.carIdx = carHistoryData[0]
         self.numLaps = carHistoryData[1]
         self.numTyreStints = carHistoryData[2]
@@ -26,6 +25,7 @@ class PacketSessionHistoryData:
         self.bestSector1LapNum = carHistoryData[4]
         self.bestSector2LapNum = carHistoryData[5]
         self.bestSector3LapNum = carHistoryData[6]
+        p = 31
         self.lapHistoryData = [None] * 100
         for i in range(100):
             self.lapHistoryData[i] = LapHistoryData(unpack("<IHHHB", data[p:p+11]))

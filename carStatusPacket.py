@@ -27,8 +27,9 @@ class CarStatusData:
         self.networkPaused = data[22]
 
 class PacketCarStatusData:
-    def __init__(self, packetHeader, data, p):
+    def __init__(self, packetHeader, data):
         self.packetHeader = packetHeader
+        p = 24
         self.carStatusData = [None] * 22
         for i in range(22):
             self.carStatusData[i] = CarStatusData(unpack("<BBBBBfffHHBBHBBBbfBfffB", data[p:p+47]))

@@ -28,8 +28,9 @@ class LapData:
         self.pitStopShouldServePen = data[23]
 
 class PacketLapData:
-    def __init__(self, packetHeader, data, p):
+    def __init__(self, packetHeader, data):
         self.packetHeader = packetHeader
+        p = 24
         self.lapData = [None] * 22
         for i in range(22):
             self.lapData[i] = LapData(unpack("<IIHHfffBBBBBBBBBBBBBBHHB", data[p:p+43]))
