@@ -31,13 +31,12 @@ def task():
         positionX = 200 + packet.carMotionData[packet.packetHeader.playerCarIndex].worldPositionX / 5
         positionZ = 200 + packet.carMotionData[packet.packetHeader.playerCarIndex].worldPositionZ / 5
         canvas.create_oval(positionX, positionZ, positionX + 10, positionZ + 10, fill = "white", outline = "white")
-        driverName.set("Pos: " + str(packet.carMotionData[packet.packetHeader.playerCarIndex].worldPositionX) + ", " + str(packet.carMotionData[packet.packetHeader.playerCarIndex].worldPositionY))
     if (packet.packetHeader.packetID == 2):
         lastLapTime.set("Previous Lap Time: " + msToString(packet.lapData[packet.packetHeader.playerCarIndex].lastLapTime))
         currentLapTime.set("Current Lap Time: " + msToString(packet.lapData[packet.packetHeader.playerCarIndex].currentLapTime))
         currentLapLabel.config(fg=getValidityTextColour(packet.lapData[packet.packetHeader.playerCarIndex].currentLapInvalid))
     if (packet.packetHeader.packetID == 4):
-        #driverName.set("Driver: " + packet.participants[packet.packetHeader.playerCarIndex].name)
+        driverName.set("Driver: " + packet.participants[packet.packetHeader.playerCarIndex].name)
         a = 1
     root.after(1, task)
 
