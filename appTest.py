@@ -1,5 +1,5 @@
 from tkinter import *
-import threading
+from threading import Thread
 from unpacker import *
 
 root = Tk()
@@ -60,7 +60,7 @@ def getTeamColour(teamId):
         return "#900000"
     return "#ffffff"
 
-def task():
+def updateData():
     global distance, newSpeed, speed, trackDistance
     packet = RetrievePacket()
     if (packet.packetHeader.packetID == 1):
@@ -91,6 +91,10 @@ def task():
         for i in range(22):
             newSpeed[i] = packet.carTelemetryData[i].speed
     root.after(1, task)
+
+def task():
+    thread = Thread(target = updateData)
+    thread.start()
 
 root.title("F1 2021 Telemetry App")
 root.geometry("1000x600+100+100")
