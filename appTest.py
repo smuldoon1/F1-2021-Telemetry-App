@@ -64,6 +64,10 @@ def getTeamColour(teamId):
 def clearCanvas(canvas):
     canvas.delete("all")
 
+def setIntVars(intVarArray, value):
+    for intVar in intVarArray:
+        intVar.set(value)
+
 def updateData():
     global distance, newSpeed, speed, trackDistance
     packet = RetrievePacket()
@@ -91,10 +95,10 @@ def updateData():
             team = packet.participants[i].teamID
             driverColours[i] = getTeamColour(team)
             if team not in teamIdOccurences:
-                driverWidths[i] = 1
+                driverWidths[i] = 2
                 teamIdOccurences.append(team)
             else:
-                driverWidths[i] = 3
+                driverWidths[i] = 1
     if (packet.packetHeader.packetID == 6):
         for i in range(22):
             newSpeed[i] = packet.carTelemetryData[i].speed
@@ -120,7 +124,9 @@ currentLapLabel.pack()
 speedTrace = Canvas(packFrame, width=1000, height=400, bg="black")
 speedTrace.pack()
 
-Button(text = "Clear Speed Trace", command= lambda: clearCanvas(speedTrace)).pack()
+Button(text = "Select All", command = lambda: setIntVars(showDriverSpeedTrace, 1)).pack()
+Button(text = "Select None", command = lambda: setIntVars(showDriverSpeedTrace, 0)).pack()
+Button(text = "Clear Speed Trace", command = lambda: clearCanvas(speedTrace)).pack()
 
 for i in range(22):
     checkButtons[i] = Checkbutton(gridFrame, textvariable=driverNames[i], variable=showDriverSpeedTrace[i])
