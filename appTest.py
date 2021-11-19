@@ -8,6 +8,7 @@ driverName = StringVar()
 lastLapTime = StringVar()
 currentLapTime = StringVar()
 
+checkButtons = [None] * 22
 showDriverSpeedTrace = [None] * 22
 driverNames = [None] * 22
 
@@ -60,6 +61,9 @@ def getTeamColour(teamId):
         return "#900000"
     return "#ffffff"
 
+def clearCanvas(canvas):
+    canvas.delete("all")
+
 def updateData():
     global distance, newSpeed, speed, trackDistance
     packet = RetrievePacket()
@@ -79,6 +83,10 @@ def updateData():
         driverName.set("Driver: " + packet.participants[packet.packetHeader.playerCarIndex].name)
         teamIdOccurences = []
         for i in range(22):
+            if i < packet.numActiveCars:
+                checkButtons[i].grid(column=i%8, row=int(i/8))
+            else:
+                checkButtons[i].grid_forget()
             driverNames[i].set(packet.participants[i].name)
             team = packet.participants[i].teamID
             driverColours[i] = getTeamColour(team)
@@ -112,8 +120,10 @@ currentLapLabel.pack()
 speedTrace = Canvas(packFrame, width=1000, height=400, bg="black")
 speedTrace.pack()
 
+Button(text = "Clear Speed Trace", command= lambda: clearCanvas(speedTrace)).pack()
+
 for i in range(22):
-    Checkbutton(gridFrame, textvariable=driverNames[i], variable=showDriverSpeedTrace[i]).grid(column=i%8, row=int(i/8))
+    checkButtons[i] = Checkbutton(gridFrame, textvariable=driverNames[i], variable=showDriverSpeedTrace[i])
 
 root.after(1, task)
 root.mainloop()
