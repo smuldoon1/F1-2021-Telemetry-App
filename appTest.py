@@ -8,13 +8,19 @@ driverName = StringVar()
 lastLapTime = StringVar()
 currentLapTime = StringVar()
 
+showDriverSpeedTrace = [None] * 22
+driverNames = [None] * 22
+
+for i in range(22):
+    showDriverSpeedTrace[i] = IntVar()
+    driverNames[i] = StringVar()
+
 newSpeed = [0] * 22
 speed = [0] * 22
 newDistance = [0] * 22
 distance = [0] * 22
 trackDistance = 0
 
-showDriverTrace = [False] * 22
 driverColours = ["#000"] * 22
 driverWidths = [1] * 22
 
@@ -52,6 +58,7 @@ def getTeamColour(teamId):
         return "#FF8700"
     if teamId == 9: # Alfa
         return "#900000"
+    return "#ffffff"
 
 def task():
     global distance, newSpeed, speed, trackDistance
@@ -64,7 +71,7 @@ def task():
         currentLapLabel.config(fg=getValidityTextColour(packet.lapData[packet.packetHeader.playerCarIndex].currentLapInvalid))
         for i in range(22):
             newDistance[i] = packet.lapData[i].lapDistance
-            if (showDriverTrace[i] == True and trackDistance != 0 and newDistance[i] > 0 and newDistance[i] < trackDistance and newDistance > distance):
+            if (showDriverSpeedTrace[i].get() and trackDistance != 0 and newDistance[i] > 0 and newDistance[i] < trackDistance and newDistance > distance):
                 speedTrace.create_line(distance[i] / (trackDistance / 1000), 400 - speed[i], newDistance[i] / (trackDistance / 1000), 400 - newSpeed[i], fill = driverColours[i], width = driverWidths[i])
             speed[i] = newSpeed[i]
             distance[i] = newDistance[i]
@@ -72,9 +79,7 @@ def task():
         driverName.set("Driver: " + packet.participants[packet.packetHeader.playerCarIndex].name)
         teamIdOccurences = []
         for i in range(22):
-            driver = packet.participants[i].driverID
-            if driver > -1:
-                showDriverTrace[i] = True
+            driverNames[i].set(packet.participants[i].name)
             team = packet.participants[i].teamID
             driverColours[i] = getTeamColour(team)
             if team not in teamIdOccurences:
@@ -90,13 +95,21 @@ def task():
 root.title("F1 2021 Telemetry App")
 root.geometry("1000x600+100+100")
 
-Label(root, textvariable=driverName).pack()
-Label(root, textvariable=lastLapTime).pack()
-currentLapLabel = Label(root, textvariable=currentLapTime)
+packFrame = Frame(root)
+gridFrame = Frame(root)
+packFrame.pack()
+gridFrame.pack()
+
+Label(packFrame, textvariable=driverName).pack()
+Label(packFrame, textvariable=lastLapTime).pack()
+currentLapLabel = Label(packFrame, textvariable=currentLapTime)
 currentLapLabel.pack()
 
-speedTrace = Canvas(root, width=1000, height=400, bg="black")
+speedTrace = Canvas(packFrame, width=1000, height=400, bg="black")
 speedTrace.pack()
+
+for i in range(22):
+    Checkbutton(gridFrame, textvariable=driverNames[i], variable=showDriverSpeedTrace[i]).grid(column=i%8, row=int(i/8))
 
 root.after(1, task)
 root.mainloop()
