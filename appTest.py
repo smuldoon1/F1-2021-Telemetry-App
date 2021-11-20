@@ -1,9 +1,13 @@
 from tkinter import *
 from threading import Thread
 from unpacker import *
+from lookupData import *
 
 root = Tk()
 
+trackName = StringVar()
+sessionType = StringVar()
+teamName = StringVar()
 driverName = StringVar()
 lastLapTime = StringVar()
 currentLapTime = StringVar()
@@ -38,29 +42,6 @@ def getValidityTextColour(boolean):
         return "#000"
     return "#f00"
 
-def getTeamColour(teamId):
-    if teamId == 0: # Mercedes
-        return "#00D2BE"
-    if teamId == 1: # Ferrari
-        return "#DC0000"
-    if teamId == 2: # Red bull
-        return "#0600EF"
-    if teamId == 3: # Williams
-        return "#005AFF"
-    if teamId == 4: # Aston martin
-        return "#006F62"
-    if teamId == 5: # Alpine
-        return "#0090FF"
-    if teamId == 6: # Alpha tauri
-        return "#2B4562"
-    if teamId == 7: # Haas
-        return "#FFFFFF"
-    if teamId == 8: # Mclaren
-        return "#FF8700"
-    if teamId == 9: # Alfa
-        return "#900000"
-    return "#ffffff"
-
 def clearCanvas(canvas):
     canvas.delete("all")
 
@@ -72,6 +53,9 @@ def updateData():
     global distance, newSpeed, speed, trackDistance
     packet = RetrievePacket()
     if (packet.packetHeader.packetID == 1):
+        track = getTrackData(packet.trackID)
+        trackName.set(track["circuit"] + ", " + track["location"] + ", " + track["country"])
+        sessionType.set(getSessionType(packet.sessionType, packet.formula))
         trackDistance = packet.trackLength
     if (packet.packetHeader.packetID == 2):
         lastLapTime.set("Previous Lap Time: " + msToString(packet.lapData[packet.packetHeader.playerCarIndex].lastLapTime))
@@ -84,6 +68,7 @@ def updateData():
             speed[i] = newSpeed[i]
             distance[i] = newDistance[i]
     if (packet.packetHeader.packetID == 4):
+        teamName.set("Team: " + getTeamData(packet.participants[packet.packetHeader.playerCarIndex].teamID)["name"])
         driverName.set("Driver: " + packet.participants[packet.packetHeader.playerCarIndex].name)
         teamIdOccurences = []
         for i in range(22):
@@ -91,14 +76,15 @@ def updateData():
                 checkButtons[i].grid(column=i%8, row=int(i/8))
             else:
                 checkButtons[i].grid_forget()
+                showDriverSpeedTrace[i].set(0)
             driverNames[i].set(packet.participants[i].name)
             team = packet.participants[i].teamID
-            driverColours[i] = getTeamColour(team)
+            driverColours[i] = getTeamData(team)["colour"]
             if team not in teamIdOccurences:
-                driverWidths[i] = 2
+                driverWidths[i] = 1
                 teamIdOccurences.append(team)
             else:
-                driverWidths[i] = 1
+                driverWidths[i] = 3
     if (packet.packetHeader.packetID == 6):
         for i in range(22):
             newSpeed[i] = packet.carTelemetryData[i].speed
@@ -109,13 +95,16 @@ def task():
     thread.start()
 
 root.title("F1 2021 Telemetry App")
-root.geometry("1000x600+100+100")
+root.geometry("1000x750+100+100")
 
 packFrame = Frame(root)
 gridFrame = Frame(root)
 packFrame.pack()
 gridFrame.pack()
 
+Label(packFrame, textvariable=trackName).pack()
+Label(packFrame, textvariable=sessionType).pack()
+Label(packFrame, textvariable=teamName).pack()
 Label(packFrame, textvariable=driverName).pack()
 Label(packFrame, textvariable=lastLapTime).pack()
 currentLapLabel = Label(packFrame, textvariable=currentLapTime)

@@ -23,5 +23,5 @@ class PacketFinalClassificationData:
         p = 25
         self.classificationData = [None] * 22
         for i in range(22):
-            self.classificationData[i] = FinalClassificationData(unpack("<BBBBBBIdBBBBBBBBBBBBBBBBBBB", data[p:p+38]))
-            p = p + 38
+            self.classificationData[i] = FinalClassificationData(unpack("<BBBBBBIdBBBBBBBBBBBBBBBBBBB", data[p:p+37]))
+            p = p + 37
