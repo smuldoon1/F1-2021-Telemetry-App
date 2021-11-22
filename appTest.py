@@ -42,9 +42,6 @@ def getValidityTextColour(boolean):
         return "#000"
     return "#f00"
 
-def clearCanvas(canvas):
-    canvas.delete("all")
-
 def setIntVars(intVarArray, value):
     for intVar in intVarArray:
         intVar.set(value)
@@ -64,7 +61,7 @@ def updateData():
         for i in range(22):
             newDistance[i] = packet.lapData[i].lapDistance
             if (showDriverSpeedTrace[i].get() and trackDistance != 0 and newDistance[i] > 0 and newDistance[i] < trackDistance and newDistance > distance):
-                speedTrace.create_line(distance[i] / (trackDistance / 1000), 400 - speed[i], newDistance[i] / (trackDistance / 1000), 400 - newSpeed[i], fill = driverColours[i], width = driverWidths[i])
+                speedTrace.create_line(distance[i] / (trackDistance / 1000), 400 - speed[i], newDistance[i] / (trackDistance / 1000), 400 - newSpeed[i], fill = driverColours[i], width = driverWidths[i], tag="trace")
             speed[i] = newSpeed[i]
             distance[i] = newDistance[i]
     if (packet.packetHeader.packetID == 4):
@@ -112,10 +109,13 @@ currentLapLabel.pack()
 
 speedTrace = Canvas(packFrame, width=1000, height=400, bg="black")
 speedTrace.pack()
+speedTrace.create_line(0, 100, 1000, 100, fill="gray")
+speedTrace.create_line(0, 200, 1000, 200, fill="gray")
+speedTrace.create_line(0, 300, 1000, 300, fill="gray")
 
 Button(text = "Select All", command = lambda: setIntVars(showDriverSpeedTrace, 1)).pack()
 Button(text = "Select None", command = lambda: setIntVars(showDriverSpeedTrace, 0)).pack()
-Button(text = "Clear Speed Trace", command = lambda: clearCanvas(speedTrace)).pack()
+Button(text = "Clear Speed Trace", command = lambda: speedTrace.delete("trace")).pack()
 
 for i in range(22):
     checkButtons[i] = Checkbutton(gridFrame, textvariable=driverNames[i], variable=showDriverSpeedTrace[i])
