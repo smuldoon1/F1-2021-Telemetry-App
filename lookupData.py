@@ -81,16 +81,16 @@ sessionTypes = {0:"Unknown Session Type",
                1:"Free Practice 1",
                2:"Free Practice 2",
                3:"Free Practice 3",
-               4:"Short Practice",
+               4:"Practice",
                5:"Qualifying 1",
                6:"Qualifying 2",
                7:"Qualifying 3",
-               8:"Short Qualifying",
+               8:"Qualifying",
                9:"One-Shot Qualifying",
                10:"Race",
                11:"Sprint Race",
                12:"Feature Race",
-               13:"Time Trial Session"}
+               13:"Time Trial"}
 
 def getSessionType(type, formula):
     if formula == 2 and type == 10:
