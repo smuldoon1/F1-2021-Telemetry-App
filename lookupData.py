@@ -43,6 +43,12 @@ teamData = {0:{"name":"Mercedes", "colour":"#00D2BE"},
 def getTeamData(index):
     return teamData.get(index, {"name":"Unknown Team", "colour":"#CCCCCC"})
 
+def hexToRgb(hexCode):
+    r = int(hexCode[1:3], 16)
+    g = int(hexCode[3:5], 16)
+    b = int(hexCode[5:7], 16)
+    return r, g, b
+
 trackData = {0:{"circuit":"Albert Park Circuit", "location":"Melbourne", "country":"Australia"},
              1:{"circuit":"Circuit Paul Ricard", "location":"Le Castellet", "country":"France"},
              2:{"circuit":"Shanghai International Circuit", "location":"Shanghai", "country":"China"},

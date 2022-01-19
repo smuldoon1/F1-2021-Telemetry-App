@@ -21,7 +21,7 @@ UDP_PORT = 20777
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind((UDP_IP, UDP_PORT))
-sock.setblocking(0)
+#sock.setblocking(0)
 
 #p = 0   # Unpacking index, keeps track of where in the data the next byte should be unpacked from
 
@@ -53,11 +53,11 @@ def UnpackData(data):
         return PacketSessionHistoryData(packetHeader, data)
 
 def RetrievePacket():
-    ready = select.select([sock], [], [], 0.1)
-    if ready[0]:
+    #ready = select.select([sock], [], [], 0.1)
+    #if ready[0]:
         data, address = sock.recvfrom(1464)
         return UnpackData(data)
-    return None
+    #return None
 
 '''
 def RetrievePacket(packetType):
