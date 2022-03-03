@@ -17,7 +17,7 @@ speedTrace = []
 
 def updateData():
     global distance, speed, speedTrace
-    packet = RetrievePacket()
+    packet = retrieve_packet()
     if packet == None:
         return
     playerCar = packet.packetHeader.playerCarIndex

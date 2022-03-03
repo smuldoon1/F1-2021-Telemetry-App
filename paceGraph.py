@@ -8,7 +8,7 @@ driverIndex = -1
 laps = [1,2,3,4,5]
 
 while True:
-    packet = RetrievePacket()
+    packet = retrieve_packet()
     driverIndex = packet.packetHeader.playerCarIndex
     if packet.packetHeader.packetID == 11:
         if packet.carIdx == driverIndex:

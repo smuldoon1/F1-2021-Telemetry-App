@@ -52,17 +52,6 @@ def UnpackData(data):
     elif packetHeader.packetID == 11:
         return PacketSessionHistoryData(packetHeader, data)
 
-def RetrievePacket():
-    #ready = select.select([sock], [], [], 0.1)
-    #if ready[0]:
-        data, address = sock.recvfrom(1464)
-        return UnpackData(data)
-    #return None
-
-'''
-def RetrievePacket(packetType):
+def retrieve_packet():
     data, address = sock.recvfrom(1464)
-    packet = UnpackData(data)
-    if packet.packetHeader.packetID == packetType:
-        return packet
-'''
+    return UnpackData(data)

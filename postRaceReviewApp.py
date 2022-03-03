@@ -29,7 +29,7 @@ class MyApp(ShowBase):
 
     # get udp packets and update data
     def updateData(self, task):
-        packet = RetrievePacket()
+        packet = retrieve_packet()
         #if packet == None:
         #    return
         playerCar = packet.packetHeader.playerCarIndex
